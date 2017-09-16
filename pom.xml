@@ -18,12 +18,9 @@
 
     <properties>
         <hadoop.version>2.7.3</hadoop.version>
-        <spark.version>2.1.0</spark.version>
-        <jedis.version>2.8.2</jedis.version>
-        <fastjson.version>1.2.14</fastjson.version>
-        <java.version>1.7</java.version>
-        <scala.version>2.11.8</scala.version>
-        <scala.binary.version>2.11</scala.binary.version>
+        <spark.version>1.5.1</spark.version>
+        <java.version>1.8</java.version>
+        <scala.binary.version>2.10</scala.binary.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -54,7 +51,7 @@
         </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
-            <artifactId>spark-streaming-kafka-0-8_${scala.binary.version}</artifactId>
+            <artifactId>spark-streaming-kafka_${scala.binary.version}</artifactId>
             <version>${spark.version}</version>
         </dependency>
         <dependency>

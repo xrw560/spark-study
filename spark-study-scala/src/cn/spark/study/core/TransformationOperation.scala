@@ -7,15 +7,14 @@ import org.apache.spark.SparkContext
  * @author Administrator
  */
 object TransformationOperation {
-  
   def main(args: Array[String]) {
-    // map()  
-    // filter()  
-    // flatMap()  
-    // groupByKey() 
-    // reduceByKey()  
-    // sortByKey() 
-    join()  
+     map()
+    // filter()
+    // flatMap()
+    // groupByKey()
+    // reduceByKey()
+    // sortByKey()
+//    join()
   }
   
   def map() {
