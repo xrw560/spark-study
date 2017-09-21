@@ -11,7 +11,7 @@ import org.apache.spark.api.java.function.VoidFunction;
 import scala.Tuple2;
 
 /**
- * 统计每行出现的次数
+ * 统计文件中每行出现的次数
  * @author Administrator
  *
  */
@@ -26,7 +26,7 @@ public class LineCount {
 		JavaSparkContext sc = new JavaSparkContext(conf);
 	
 		// 创建初始RDD，lines，每个元素是一行文本
-		JavaRDD<String> lines = sc.textFile("C://Users//Administrator//Desktop//hello.txt");
+		JavaRDD<String> lines = sc.textFile("data/hello.txt");
 		
 		// 对lines RDD执行mapToPair算子，将每一行映射为(line, 1)的这种key-value对的格式
 		// 然后后面才能统计每一行出现的次数
