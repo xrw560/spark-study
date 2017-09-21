@@ -28,10 +28,10 @@ public class TransformationOperation {
 //        map();
 //         filter();
 //         flatMap();
-         groupByKey();
-        // reduceByKey();
-        // sortByKey();
-        // join();
+//         groupByKey();
+//         reduceByKey();
+//         sortByKey();
+        join();
 //        cogroup();
     }
 
@@ -221,7 +221,7 @@ public class TransformationOperation {
         // 针对scores RDD，执行groupByKey算子，对每个班级的成绩进行分组
         // groupByKey算子，返回的还是JavaPairRDD
         // 但是，JavaPairRDD的第一个泛型类型不变，第二个泛型类型变成Iterable这种集合类型
-        // 也就是说，按照了key进行分组，那么每个key可能都会有多个value，此时多个value聚合成了Iterable
+        // 也就是说，按照key进行分组，那么每个key可能都会有多个value，此时多个value聚合成了Iterable
         // 那么接下来，我们是不是就可以通过groupedScores这种JavaPairRDD，很方便地处理某个分组内的数据
         JavaPairRDD<String, Iterable<Integer>> groupedScores = scores.groupByKey();
 
@@ -273,7 +273,7 @@ public class TransformationOperation {
         // 第一个泛型类型和第二个泛型类型，代表了原始RDD中的元素的value的类型
         // 因此对每个key进行reduce，都会依次将第一个、第二个value传入，将值再与第三个value传入
         // 因此此处，会自动定义两个泛型类型，代表call()方法的两个传入参数的类型
-        // 第三个泛型类型，代表了每次reduce操作返回的值的类型，默认也是与原始RDD的value类型相同的
+        // 第三个泛型类型，代表了每次reduce操作返回的值的类型，默认也是与原始RDD的value类型是相同的
         // reduceByKey算法返回的RDD，还是JavaPairRDD<key, value>
         JavaPairRDD<String, Integer> totalScores = scores.reduceByKey(
 
@@ -378,9 +378,9 @@ public class TransformationOperation {
 
         // 使用join算子关联两个RDD
         // join以后，还是会根据key进行join，并返回JavaPairRDD
-        // 但是JavaPairRDD的第一个泛型类型，之前两个JavaPairRDD的key的类型，因为是通过key进行join的
+        // 但是JavaPairRDD的第一个泛型类型，是之前两个JavaPairRDD的key的类型，因为是通过key进行join的
         // 第二个泛型类型，是Tuple2<v1, v2>的类型，Tuple2的两个泛型分别为原始RDD的value的类型
-        // join，就返回的RDD的每一个元素，就是通过key join上的一个pair
+        // join，返回的RDD的每一个元素，就是通过key join上的一个pair
         // 什么意思呢？比如有(1, 1) (1, 2) (1, 3)的一个RDD
         // 还有一个(1, 4) (2, 1) (2, 2)的一个RDD
         // 如果是cogroup的话，会是(1,((1,2,3),(4)))
