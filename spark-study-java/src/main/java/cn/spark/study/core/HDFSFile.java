@@ -33,6 +33,7 @@ public class HDFSFile {
 
 			@Override
 			public Integer call(String v1) throws Exception {
+				//每一行的字数
 				return v1.length();
 			}
 			
