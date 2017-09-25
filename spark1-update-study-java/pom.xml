@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>cn.spark</groupId>
-  <artifactId>spark-study-java</artifactId>
+  <artifactId>spark1-study-java</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>spark-study-java</name>
+  <name>spark1-update-study-java</name>
   <url>http://maven.apache.org</url>
 
   <properties>
