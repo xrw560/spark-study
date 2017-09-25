@@ -20,6 +20,7 @@
         <hadoop.version>2.7.3</hadoop.version>
         <spark.version>1.5.1</spark.version>
         <java.version>1.8</java.version>
+        <scala.version>2.10.6</scala.version>
         <scala.binary.version>2.10</scala.binary.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
