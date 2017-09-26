@@ -8,21 +8,21 @@ import org.apache.spark.sql.SaveMode;
 
 /**
  * SaveModel示例
- * @author Administrator
  *
+ * @author Administrator
  */
 public class SaveModeTest {
 
-	@SuppressWarnings("deprecation")
-	public static void main(String[] args) {
-		SparkConf conf = new SparkConf()   
-				.setAppName("SaveModeTest");
-		JavaSparkContext sc = new JavaSparkContext(conf);
-		SQLContext sqlContext = new SQLContext(sc);
-		
-		DataFrame peopleDF = sqlContext.read().format("json")
-				.load("hdfs://spark1:9000/people.json"); 
-		peopleDF.save("hdfs://spark1:9000/people_savemode_test", "json", SaveMode.Append);
-	}
-	
+    @SuppressWarnings("deprecation")
+    public static void main(String[] args) {
+        SparkConf conf = new SparkConf()
+                           .setAppName("SaveModeTest");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        SQLContext sqlContext = new SQLContext(sc);
+
+        DataFrame peopleDF = sqlContext.read().format("json")
+                               .load("hdfs://spark1:9000/people.json");
+        peopleDF.save("hdfs://spark1:9000/people_savemode_test", "json", SaveMode.Append);
+    }
+
 }

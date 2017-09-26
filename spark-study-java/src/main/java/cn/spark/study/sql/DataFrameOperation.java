@@ -18,7 +18,7 @@ public class DataFrameOperation {
         Logger.getLogger("org").setLevel(Level.ERROR);
         // 创建DataFrame
         SparkConf conf = new SparkConf()
-                .setAppName("DataFrameCreate").setMaster("local");
+                           .setAppName("DataFrameCreate").setMaster("local");
         JavaSparkContext sc = new JavaSparkContext(conf);
         SQLContext sqlContext = new SQLContext(sc);
 

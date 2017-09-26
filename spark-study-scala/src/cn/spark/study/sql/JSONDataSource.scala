@@ -34,7 +34,7 @@ object JSONDataSource {
     val studentInfoJSONs = Array("{\"name\":\"Leo\", \"age\":18}", 
         "{\"name\":\"Marry\", \"age\":17}",
         "{\"name\":\"Jack\", \"age\":19}")
-    val studentInfoJSONsRDD = sc.parallelize(studentInfoJSONs, 3);
+    val studentInfoJSONsRDD = sc.parallelize(studentInfoJSONs, 3)
     val studentInfosDF = sqlContext.read.json(studentInfoJSONsRDD)  
     
     // 查询分数大于80分的学生的基本信息
@@ -54,7 +54,7 @@ object JSONDataSource {
     // 将分数大于80分的学生的成绩信息与基本信息进行join
     val goodStudentsRDD = 
         goodStudentScoresDF.rdd.map { row => (row.getAs[String]("name"), row.getAs[Long]("score")) }
-            .join(goodStudentInfosDF.rdd.map { row => (row.getAs[String]("name"), row.getAs[Long]("age")) })  
+            .join(goodStudentInfosDF.rdd.map { row => (row.getAs[String]("name"), row.getAs("age")) })
   
     // 将rdd转换为dataframe
     val goodStudentRowsRDD = goodStudentsRDD.map(
