@@ -7,21 +7,21 @@ import org.apache.spark.sql.SQLContext;
 
 /**
  * Parquet数据源之自动推断分区
- * @author Administrator
  *
+ * @author Administrator
  */
 public class ParquetPartitionDiscovery {
 
-	public static void main(String[] args) {
-		SparkConf conf = new SparkConf()
-				.setAppName("ParquetPartitionDiscovery");  
-		JavaSparkContext sc = new JavaSparkContext(conf);
-		SQLContext sqlContext = new SQLContext(sc);
-		
-		DataFrame usersDF = sqlContext.read().parquet(
-				"hdfs://spark1:9000/spark-study/users/gender=male/country=US/users.parquet");
-		usersDF.printSchema();
-		usersDF.show();
-	}
-	
+    public static void main(String[] args) {
+        SparkConf conf = new SparkConf()
+                           .setAppName("ParquetPartitionDiscovery");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        SQLContext sqlContext = new SQLContext(sc);
+
+        DataFrame usersDF = sqlContext.read().parquet(
+          "hdfs://spark1:9000/spark-study/users/gender=male/country=US/users.parquet");
+        usersDF.printSchema();
+        usersDF.show();
+    }
+
 }
