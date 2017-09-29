@@ -15,64 +15,64 @@ import scala.Tuple2;
 
 /**
  * 基于HDFS文件的实时wordcount程序
- * @author Administrator
  *
+ * @author Administrator
  */
 public class HDFSWordCount {
 
-	public static void main(String[] args) {
-		SparkConf conf = new SparkConf()
-				.setMaster("local[2]")
-				.setAppName("HDFSWordCount");  
-		JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
-		
-		// 首先，使用JavaStreamingContext的textFileStream()方法，针对HDFS目录创建输入数据流
-		JavaDStream<String> lines = jssc.textFileStream("hdfs://spark1:9000/wordcount_dir");
-		
-		// 执行wordcount操作
-		JavaDStream<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
+    public static void main(String[] args) {
+        SparkConf conf = new SparkConf()
+                           .setMaster("local[2]")
+                           .setAppName("HDFSWordCount");
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
 
-			private static final long serialVersionUID = 1L;
+        // 首先，使用JavaStreamingContext的textFileStream()方法，针对HDFS目录创建输入数据流
+        JavaDStream<String> lines = jssc.textFileStream("hdfs://spark1:9000/wordcount_dir");
 
-			@Override
-			public Iterable<String> call(String line) throws Exception {
-				return Arrays.asList(line.split(" "));
-			}
-			
-		});
-		
-		JavaPairDStream<String, Integer> pairs = words.mapToPair(
-				
-				new PairFunction<String, String, Integer>() {
+        // 执行wordcount操作
+        JavaDStream<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
 
-					private static final long serialVersionUID = 1L;
+            private static final long serialVersionUID = 1L;
 
-					@Override
-					public Tuple2<String, Integer> call(String word)
-							throws Exception {
-						return new Tuple2<String, Integer>(word, 1);
-					}
-					
-				});
-		
-		JavaPairDStream<String, Integer> wordCounts = pairs.reduceByKey(
-				
-				new Function2<Integer, Integer, Integer>() {
+            @Override
+            public Iterable<String> call(String line) throws Exception {
+                return Arrays.asList(line.split(" "));
+            }
 
-					private static final long serialVersionUID = 1L;
+        });
 
-					@Override
-					public Integer call(Integer v1, Integer v2) throws Exception {
-						return v1 + v2;
-					}
-					
-				});
-		
-		wordCounts.print();
-		
-		jssc.start();
-		jssc.awaitTermination();
-		jssc.close();
-	}
-	
+        JavaPairDStream<String, Integer> pairs = words.mapToPair(
+
+          new PairFunction<String, String, Integer>() {
+
+              private static final long serialVersionUID = 1L;
+
+              @Override
+              public Tuple2<String, Integer> call(String word)
+                throws Exception {
+                  return new Tuple2<String, Integer>(word, 1);
+              }
+
+          });
+
+        JavaPairDStream<String, Integer> wordCounts = pairs.reduceByKey(
+
+          new Function2<Integer, Integer, Integer>() {
+
+              private static final long serialVersionUID = 1L;
+
+              @Override
+              public Integer call(Integer v1, Integer v2) throws Exception {
+                  return v1 + v2;
+              }
+
+          });
+
+        wordCounts.print();
+
+        jssc.start();
+        jssc.awaitTermination();
+        jssc.close();
+    }
+
 }
