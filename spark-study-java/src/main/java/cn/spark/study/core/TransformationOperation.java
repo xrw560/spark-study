@@ -41,8 +41,8 @@ public class TransformationOperation {
     private static void map() {
         // 创建SparkConf
         SparkConf conf = new SparkConf()
-                .setAppName("map")
-                .setMaster("local");
+                           .setAppName("map")
+                           .setMaster("local");
         // 创建JavaSparkContext
         JavaSparkContext sc = new JavaSparkContext(conf);
 
@@ -61,18 +61,18 @@ public class TransformationOperation {
         // 所有新的元素就会组成一个新的RDD
         JavaRDD<Integer> multipleNumberRDD = numberRDD.map(
 
-                new Function<Integer, Integer>() {
+          new Function<Integer, Integer>() {
 
-                    private static final long serialVersionUID = 1L;
+              private static final long serialVersionUID = 1L;
 
-                    // 传入call()方法的，就是1,2,3,4,5
-                    // 返回的就是2,4,6,8,10
-                    @Override
-                    public Integer call(Integer v1) throws Exception {
-                        return v1 * 2;
-                    }
+              // 传入call()方法的，就是1,2,3,4,5
+              // 返回的就是2,4,6,8,10
+              @Override
+              public Integer call(Integer v1) throws Exception {
+                  return v1 * 2;
+              }
 
-                });
+          });
 
         // 打印新的RDD
         multipleNumberRDD.foreach(new VoidFunction<Integer>() {
@@ -96,8 +96,8 @@ public class TransformationOperation {
     private static void filter() {
         // 创建SparkConf
         SparkConf conf = new SparkConf()
-                .setAppName("filter")
-                .setMaster("local");
+                           .setAppName("filter")
+                           .setMaster("local");
         // 创建JavaSparkContext
         JavaSparkContext sc = new JavaSparkContext(conf);
 
@@ -115,19 +115,19 @@ public class TransformationOperation {
         // 如果你想在新的RDD中保留这个元素，那么就返回true；否则，不想保留这个元素，返回false
         JavaRDD<Integer> evenNumberRDD = numberRDD.filter(
 
-                new Function<Integer, Boolean>() {
+          new Function<Integer, Boolean>() {
 
-                    private static final long serialVersionUID = 1L;
+              private static final long serialVersionUID = 1L;
 
-                    // 在这里，1到10，都会传入进来
-                    // 但是根据我们的逻辑，只有2,4,6,8,10这几个偶数，会返回true
-                    // 所以，只有偶数会保留下来，放在新的RDD中
-                    @Override
-                    public Boolean call(Integer v1) throws Exception {
-                        return v1 % 2 == 0;
-                    }
+              // 在这里，1到10，都会传入进来
+              // 但是根据我们的逻辑，只有2,4,6,8,10这几个偶数，会返回true
+              // 所以，只有偶数会保留下来，放在新的RDD中
+              @Override
+              public Boolean call(Integer v1) throws Exception {
+                  return v1 % 2 == 0;
+              }
 
-                });
+          });
 
         // 打印新的RDD
         evenNumberRDD.foreach(new VoidFunction<Integer>() {
@@ -151,8 +151,8 @@ public class TransformationOperation {
     private static void flatMap() {
         // 创建SparkConf
         SparkConf conf = new SparkConf()
-                .setAppName("flatMap")
-                .setMaster("local");
+                           .setAppName("flatMap")
+                           .setMaster("local");
         // 创建JavaSparkContext
         JavaSparkContext sc = new JavaSparkContext(conf);
 
@@ -203,17 +203,17 @@ public class TransformationOperation {
     private static void groupByKey() {
         // 创建SparkConf
         SparkConf conf = new SparkConf()
-                .setAppName("groupByKey")
-                .setMaster("local");
+                           .setAppName("groupByKey")
+                           .setMaster("local");
         // 创建JavaSparkContext
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         // 模拟集合
         List<Tuple2<String, Integer>> scoreList = Arrays.asList(
-                new Tuple2<String, Integer>("class1", 80),
-                new Tuple2<String, Integer>("class2", 75),
-                new Tuple2<String, Integer>("class1", 90),
-                new Tuple2<String, Integer>("class2", 65));
+          new Tuple2<String, Integer>("class1", 80),
+          new Tuple2<String, Integer>("class2", 75),
+          new Tuple2<String, Integer>("class1", 90),
+          new Tuple2<String, Integer>("class2", 65));
 
         // 并行化集合，创建JavaPairRDD
         JavaPairRDD<String, Integer> scores = sc.parallelizePairs(scoreList);
@@ -232,7 +232,7 @@ public class TransformationOperation {
 
             @Override
             public void call(Tuple2<String, Iterable<Integer>> t)
-                    throws Exception {
+              throws Exception {
                 System.out.println("class: " + t._1);
                 Iterator<Integer> ite = t._2.iterator();
                 while (ite.hasNext()) {
@@ -253,17 +253,17 @@ public class TransformationOperation {
     private static void reduceByKey() {
         // 创建SparkConf
         SparkConf conf = new SparkConf()
-                .setAppName("reduceByKey")
-                .setMaster("local");
+                           .setAppName("reduceByKey")
+                           .setMaster("local");
         // 创建JavaSparkContext
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         // 模拟集合
         List<Tuple2<String, Integer>> scoreList = Arrays.asList(
-                new Tuple2<String, Integer>("class1", 80),
-                new Tuple2<String, Integer>("class2", 75),
-                new Tuple2<String, Integer>("class1", 90),
-                new Tuple2<String, Integer>("class2", 65));
+          new Tuple2<String, Integer>("class1", 80),
+          new Tuple2<String, Integer>("class2", 75),
+          new Tuple2<String, Integer>("class1", 90),
+          new Tuple2<String, Integer>("class2", 65));
 
         // 并行化集合，创建JavaPairRDD
         JavaPairRDD<String, Integer> scores = sc.parallelizePairs(scoreList);
@@ -277,19 +277,19 @@ public class TransformationOperation {
         // reduceByKey算法返回的RDD，还是JavaPairRDD<key, value>
         JavaPairRDD<String, Integer> totalScores = scores.reduceByKey(
 
-                new Function2<Integer, Integer, Integer>() {
+          new Function2<Integer, Integer, Integer>() {
 
-                    private static final long serialVersionUID = 1L;
+              private static final long serialVersionUID = 1L;
 
-                    // 对每个key，都会将其value，依次传入call方法
-                    // 从而聚合出每个key对应的一个value
-                    // 然后，将每个key对应的一个value，组合成一个Tuple2，作为新RDD的元素
-                    @Override
-                    public Integer call(Integer v1, Integer v2) throws Exception {
-                        return v1 + v2;
-                    }
+              // 对每个key，都会将其value，依次传入call方法
+              // 从而聚合出每个key对应的一个value
+              // 然后，将每个key对应的一个value，组合成一个Tuple2，作为新RDD的元素
+              @Override
+              public Integer call(Integer v1, Integer v2) throws Exception {
+                  return v1 + v2;
+              }
 
-                });
+          });
 
         // 打印totalScores RDD
         totalScores.foreach(new VoidFunction<Tuple2<String, Integer>>() {
@@ -313,17 +313,17 @@ public class TransformationOperation {
     private static void sortByKey() {
         // 创建SparkConf
         SparkConf conf = new SparkConf()
-                .setAppName("sortByKey")
-                .setMaster("local");
+                           .setAppName("sortByKey")
+                           .setMaster("local");
         // 创建JavaSparkContext
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         // 模拟集合
         List<Tuple2<Integer, String>> scoreList = Arrays.asList(
-                new Tuple2<Integer, String>(65, "leo"),
-                new Tuple2<Integer, String>(50, "tom"),
-                new Tuple2<Integer, String>(100, "marry"),
-                new Tuple2<Integer, String>(80, "jack"));
+          new Tuple2<Integer, String>(65, "leo"),
+          new Tuple2<Integer, String>(50, "tom"),
+          new Tuple2<Integer, String>(100, "marry"),
+          new Tuple2<Integer, String>(80, "jack"));
 
         // 并行化集合，创建RDD
         JavaPairRDD<Integer, String> scores = sc.parallelizePairs(scoreList);
@@ -356,21 +356,21 @@ public class TransformationOperation {
     private static void join() {
         // 创建SparkConf
         SparkConf conf = new SparkConf()
-                .setAppName("join")
-                .setMaster("local");
+                           .setAppName("join")
+                           .setMaster("local");
         // 创建JavaSparkContext
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         // 模拟集合
         List<Tuple2<Integer, String>> studentList = Arrays.asList(
-                new Tuple2<Integer, String>(1, "leo"),
-                new Tuple2<Integer, String>(2, "jack"),
-                new Tuple2<Integer, String>(3, "tom"));
+          new Tuple2<Integer, String>(1, "leo"),
+          new Tuple2<Integer, String>(2, "jack"),
+          new Tuple2<Integer, String>(3, "tom"));
 
         List<Tuple2<Integer, Integer>> scoreList = Arrays.asList(
-                new Tuple2<Integer, Integer>(1, 100),
-                new Tuple2<Integer, Integer>(2, 90),
-                new Tuple2<Integer, Integer>(3, 60));
+          new Tuple2<Integer, Integer>(1, 100),
+          new Tuple2<Integer, Integer>(2, 90),
+          new Tuple2<Integer, Integer>(3, 60));
 
         // 并行化两个RDD
         JavaPairRDD<Integer, String> students = sc.parallelizePairs(studentList);
@@ -390,20 +390,20 @@ public class TransformationOperation {
         // 打印studnetScores RDD
         studentScores.foreach(
 
-                new VoidFunction<Tuple2<Integer, Tuple2<String, Integer>>>() {
+          new VoidFunction<Tuple2<Integer, Tuple2<String, Integer>>>() {
 
-                    private static final long serialVersionUID = 1L;
+              private static final long serialVersionUID = 1L;
 
-                    @Override
-                    public void call(Tuple2<Integer, Tuple2<String, Integer>> t)
-                            throws Exception {
-                        System.out.println("student id: " + t._1);
-                        System.out.println("student name: " + t._2._1);
-                        System.out.println("student score: " + t._2._2);
-                        System.out.println("===============================");
-                    }
+              @Override
+              public void call(Tuple2<Integer, Tuple2<String, Integer>> t)
+                throws Exception {
+                  System.out.println("student id: " + t._1);
+                  System.out.println("student name: " + t._2._1);
+                  System.out.println("student score: " + t._2._2);
+                  System.out.println("===============================");
+              }
 
-                });
+          });
 
         // 关闭JavaSparkContext
         sc.close();
@@ -415,24 +415,24 @@ public class TransformationOperation {
     private static void cogroup() {
         // 创建SparkConf
         SparkConf conf = new SparkConf()
-                .setAppName("cogroup")
-                .setMaster("local");
+                           .setAppName("cogroup")
+                           .setMaster("local");
         // 创建JavaSparkContext
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         // 模拟集合
         List<Tuple2<Integer, String>> studentList = Arrays.asList(
-                new Tuple2<Integer, String>(1, "leo"),
-                new Tuple2<Integer, String>(2, "jack"),
-                new Tuple2<Integer, String>(3, "tom"));
+          new Tuple2<Integer, String>(1, "leo"),
+          new Tuple2<Integer, String>(2, "jack"),
+          new Tuple2<Integer, String>(3, "tom"));
 
         List<Tuple2<Integer, Integer>> scoreList = Arrays.asList(
-                new Tuple2<Integer, Integer>(1, 100),
-                new Tuple2<Integer, Integer>(2, 90),
-                new Tuple2<Integer, Integer>(3, 60),
-                new Tuple2<Integer, Integer>(1, 70),
-                new Tuple2<Integer, Integer>(2, 80),
-                new Tuple2<Integer, Integer>(3, 50));
+          new Tuple2<Integer, Integer>(1, 100),
+          new Tuple2<Integer, Integer>(2, 90),
+          new Tuple2<Integer, Integer>(3, 60),
+          new Tuple2<Integer, Integer>(1, 70),
+          new Tuple2<Integer, Integer>(2, 80),
+          new Tuple2<Integer, Integer>(3, 50));
 
         // 并行化两个RDD
         JavaPairRDD<Integer, String> students = sc.parallelizePairs(studentList);
@@ -441,27 +441,26 @@ public class TransformationOperation {
         // cogroup与join不同
         // 相当于是，一个key join上的所有value，都给放到一个Iterable里面去了
         // cogroup，不太好讲解，希望大家通过动手编写我们的案例，仔细体会其中的奥妙
-        JavaPairRDD<Integer, Tuple2<Iterable<String>, Iterable<Integer>>> studentScores =
-                students.cogroup(scores);
+        JavaPairRDD<Integer, Tuple2<Iterable<String>, Iterable<Integer>>> studentScores = students.cogroup(scores);
 
         // 打印studnetScores RDD
         studentScores.foreach(
 
-                new VoidFunction<Tuple2<Integer, Tuple2<Iterable<String>, Iterable<Integer>>>>() {
+          new VoidFunction<Tuple2<Integer, Tuple2<Iterable<String>, Iterable<Integer>>>>() {
 
-                    private static final long serialVersionUID = 1L;
+              private static final long serialVersionUID = 1L;
 
-                    @Override
-                    public void call(
-                            Tuple2<Integer, Tuple2<Iterable<String>, Iterable<Integer>>> t)
-                            throws Exception {
-                        System.out.println("student id: " + t._1);
-                        System.out.println("student name: " + t._2._1);
-                        System.out.println("student score: " + t._2._2);
-                        System.out.println("===============================");
-                    }
+              @Override
+              public void call(
+                                Tuple2<Integer, Tuple2<Iterable<String>, Iterable<Integer>>> t)
+                throws Exception {
+                  System.out.println("student id: " + t._1);
+                  System.out.println("student name: " + t._2._1);
+                  System.out.println("student score: " + t._2._2);
+                  System.out.println("===============================");
+              }
 
-                });
+          });
 
         // 关闭JavaSparkContext
         sc.close();
