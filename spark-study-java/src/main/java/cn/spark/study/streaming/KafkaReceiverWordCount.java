@@ -19,74 +19,74 @@ import scala.Tuple2;
 
 /**
  * 基于Kafka receiver方式的实时wordcount程序
- * @author Administrator
  *
+ * @author Administrator
  */
 public class KafkaReceiverWordCount {
 
-	public static void main(String[] args) {
-		SparkConf conf = new SparkConf()
-				.setMaster("local[2]")
-				.setAppName("KafkaWordCount");  
-		JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
-		
-		// 使用KafkaUtils.createStream()方法，创建针对Kafka的输入数据流
-		Map<String, Integer> topicThreadMap = new HashMap<String, Integer>();
-		topicThreadMap.put("WordCount", 1);
-		
-		JavaPairReceiverInputDStream<String, String> lines = KafkaUtils.createStream(
-				jssc, 
-				"192.168.1.107:2181,192.168.1.108:2181,192.168.1.109:2181", 
-				"DefaultConsumerGroup", 
-				topicThreadMap);
-		
-		// 然后开发wordcount逻辑
-		JavaDStream<String> words = lines.flatMap(
-				
-				new FlatMapFunction<Tuple2<String,String>, String>() {
+    public static void main(String[] args) {
+        SparkConf conf = new SparkConf()
+                           .setMaster("local[2]")
+                           .setAppName("KafkaWordCount");
+        JavaStreamingContext jssc = new JavaStreamingContext(conf, Durations.seconds(5));
 
-					private static final long serialVersionUID = 1L;
+        // 使用KafkaUtils.createStream()方法，创建针对Kafka的输入数据流
+        Map<String, Integer> topicThreadMap = new HashMap<String, Integer>();
+        topicThreadMap.put("WordCount", 1);
 
-					@Override
-					public Iterable<String> call(Tuple2<String, String> tuple)
-							throws Exception {
-						return Arrays.asList(tuple._2.split(" "));  
-					}
-					
-				});
-		
-		JavaPairDStream<String, Integer> pairs = words.mapToPair(
-				
-				new PairFunction<String, String, Integer>() {
+        JavaPairReceiverInputDStream<String, String> lines = KafkaUtils.createStream(
+          jssc,
+          "192.168.1.107:2181,192.168.1.108:2181,192.168.1.109:2181",
+          "DefaultConsumerGroup",
+          topicThreadMap);
 
-					private static final long serialVersionUID = 1L;
+        // 然后开发wordcount逻辑
+        JavaDStream<String> words = lines.flatMap(
 
-					@Override
-					public Tuple2<String, Integer> call(String word)
-							throws Exception {
-						return new Tuple2<String, Integer>(word, 1);
-					}
-					
-				});
-		
-		JavaPairDStream<String, Integer> wordCounts = pairs.reduceByKey(
-				
-				new Function2<Integer, Integer, Integer>() {
-			
-					private static final long serialVersionUID = 1L;
+          new FlatMapFunction<Tuple2<String, String>, String>() {
 
-					@Override
-					public Integer call(Integer v1, Integer v2) throws Exception {
-						return v1 + v2;
-					}
-					
-				});
-		
-		wordCounts.print();  
-		
-		jssc.start();
-		jssc.awaitTermination();
-		jssc.close();
-	}
-	
+              private static final long serialVersionUID = 1L;
+
+              @Override
+              public Iterable<String> call(Tuple2<String, String> tuple)
+                throws Exception {
+                  return Arrays.asList(tuple._2.split(" "));
+              }
+
+          });
+
+        JavaPairDStream<String, Integer> pairs = words.mapToPair(
+
+          new PairFunction<String, String, Integer>() {
+
+              private static final long serialVersionUID = 1L;
+
+              @Override
+              public Tuple2<String, Integer> call(String word)
+                throws Exception {
+                  return new Tuple2<String, Integer>(word, 1);
+              }
+
+          });
+
+        JavaPairDStream<String, Integer> wordCounts = pairs.reduceByKey(
+
+          new Function2<Integer, Integer, Integer>() {
+
+              private static final long serialVersionUID = 1L;
+
+              @Override
+              public Integer call(Integer v1, Integer v2) throws Exception {
+                  return v1 + v2;
+              }
+
+          });
+
+        wordCounts.print();
+
+        jssc.start();
+        jssc.awaitTermination();
+        jssc.close();
+    }
+
 }
